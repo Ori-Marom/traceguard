@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Add the first outbound connection lab
+
+- Added an IPv4 connect probe that records the requested destination and syscall result for a tagged process.
+- Extended JSON Lines normalization and replay to associate connect events with the exact process identity.
+- Ran ten Python regression tests, checked the shell script syntax, and verified that the local TCP workload produces success and refusal.
+- The eBPF probe still needs a run on WSL2. IPv6 capture and nonblocking completion remain later work.
+
 ## 2026-11-08 — Verify live lifecycle capture on WSL2
 
 - The tagged workload passed the live `fork → exec → exit` check on WSL2 with bpftrace v0.20.2.

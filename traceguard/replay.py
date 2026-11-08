@@ -1,6 +1,7 @@
 """Replay a TraceGuard v1 JSON Lines capture into a process snapshot."""
 
 import argparse
+from ipaddress import IPv4Address
 import json
 from pathlib import Path
 
@@ -45,7 +46,7 @@ def _load_events(lines):
                 raise ValueError(f"duplicate seq {sequence}")
             sequences.add(sequence)
             _integer(event.get("ts_ns"), "ts_ns")
-            if event.get("type") not in ("fork", "exec", "exit", "loss"):
+            if event.get("type") not in ("fork", "exec", "exit", "loss", "connect"):
                 raise ValueError("unknown event type")
             events.append((line_number, event))
         except ValueError as exc:
@@ -55,10 +56,31 @@ def _load_events(lines):
     return scope, sorted(events, key=lambda row: (row[1]["ts_ns"], row[1]["seq"]))
 
 
+def _connection(event, identity):
+    address = event.get("address")
+    if not isinstance(address, str):
+        raise ValueError("address must be an IPv4 string")
+    address = str(IPv4Address(address))
+    port = _integer(event.get("port"), "port", 1)
+    if port > 65535:
+        raise ValueError("port must be <= 65535")
+    result = _integer(event.get("result"), "result", -4095)
+    if result > 0:
+        raise ValueError("result must be zero or a negative Linux errno")
+    return {
+        "ts_ns": event["ts_ns"],
+        "process": {"pid": identity[0], "start_ns": identity[1]},
+        "address": address,
+        "port": port,
+        "result": result,
+    }
+
+
 def replay(lines):
     """Build an observed process snapshot from one host and boot."""
     (host_id, boot_id), events = _load_events(lines)
     processes = {}
+    connections = []
     lost_events = 0
 
     for line_number, event in events:
@@ -70,6 +92,9 @@ def replay(lines):
                 continue
 
             identity = _identity(event.get("process"), "process", timestamp)
+            if kind == "connect":
+                connections.append(_connection(event, identity))
+                continue
             if identity not in processes:
                 processes[identity] = {
                     "pid": identity[0],
@@ -117,12 +142,17 @@ def replay(lines):
         if parent is not None:
             parent["observed"] = (parent["pid"], parent["start_ns"]) in processes
 
+    for connection in connections:
+        process = connection["process"]
+        connection["process_observed"] = (process["pid"], process["start_ns"]) in processes
+
     return {
         "version": 1,
         "host_id": host_id,
         "boot_id": boot_id,
         "lost_events": lost_events,
         "processes": [processes[key] for key in sorted(processes)],
+        "connections": connections,
     }
 
 

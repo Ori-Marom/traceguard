@@ -1,0 +1,49 @@
+#!/usr/bin/env bpftrace
+
+// sockaddr_in's layout for an IPv4 connect. The port is in network byte order.
+struct tg_sockaddr_in {
+    unsigned short family;
+    unsigned char port_high;
+    unsigned char port_low;
+    unsigned int address;
+    unsigned char padding[8];
+};
+
+// Scope both exec and connect probes to the lab's randomly named executable.
+tracepoint:sched:sched_process_exec
+/comm == str($1)/
+{
+    $parent = curtask->real_parent;
+    printf("TG\texec\t%llu\t%d\t%llu\t%d\t%llu\t%s\n",
+           nsecs(monotonic), pid, curtask->start_time,
+           $parent->tgid, $parent->group_leader->start_time, comm);
+}
+
+tracepoint:syscalls:sys_enter_connect
+/comm == str($1) && args.addrlen >= 16/
+{
+    $address = uptr((struct tg_sockaddr_in *)args.uservaddr);
+    if ($address->family == 2) {
+        $port = ((uint32)$address->port_high * 256) + $address->port_low;
+        if ($port != 0) {
+            @address[tid] = $address->address;
+            @port[tid] = $port;
+        }
+    }
+}
+
+tracepoint:syscalls:sys_exit_connect
+/@port[tid] != 0/
+{
+    printf("TG\tconnect\t%llu\t%d\t%llu\t%s\t%d\t%lld\n",
+           nsecs(monotonic), pid, curtask->group_leader->start_time,
+           ntop(2, (uint32)@address[tid]), @port[tid], args.ret);
+    delete(@address[tid]);
+    delete(@port[tid]);
+}
+
+END
+{
+    clear(@address);
+    clear(@port);
+}

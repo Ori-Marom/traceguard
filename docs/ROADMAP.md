@@ -34,6 +34,13 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Capture live fork and process exit events for the scoped workload on WSL2.
 - [x] Normalize a live capture, validate it with replay, and save it locally.
 
+## Stage 3: network telemetry
+
+- [x] Add an IPv4 connect event and join it to the full process identity in replay.
+- [x] Add a local TCP workload with successful and refused connections.
+- [ ] Verify both live outcomes on WSL2.
+- [ ] Extend the probe to IPv6 and validate it on WSL2.
+
 ## Validation strategy
 
 Compare capture against a controlled workload with known process count and relationships. Add stress tests only once the basic capture is correct. Record kernel version, hardware, workload, duration, and losses with every benchmark.

@@ -10,7 +10,7 @@ from traceguard.replay import replay
 
 def normalize(lines, host_id, boot_id):
     events = []
-    field_counts = {"fork": 7, "exec": 8, "exit": 5}
+    field_counts = {"fork": 7, "exec": 8, "exit": 5, "connect": 8}
 
     for line_number, line in enumerate(lines, 1):
         fields = line.rstrip("\n").split("\t")
@@ -42,6 +42,10 @@ def normalize(lines, host_id, boot_id):
             if kind == "exec":
                 event["comm"] = fields[7]
                 event["comm_truncated"] = None
+            if kind == "connect":
+                event["address"] = fields[5]
+                event["port"] = int(fields[6])
+                event["result"] = int(fields[7])
         except ValueError as exc:
             raise ValueError(f"invalid numeric field on line {line_number}") from exc
         events.append(event)
@@ -72,15 +76,19 @@ def verify_workload(events, parent_comm, child_comm):
     return serialized, parent["pid"], child["pid"]
 
 
+def read_scope():
+    host_id = Path("/etc/machine-id").read_text(encoding="ascii").strip()
+    boot_id = Path("/proc/sys/kernel/random/boot_id").read_text(encoding="ascii").strip()
+    return host_id, boot_id
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("parent_comm")
     parser.add_argument("child_comm")
     args = parser.parse_args()
     try:
-        host_id = Path("/etc/machine-id").read_text(encoding="ascii").strip()
-        boot_id = Path("/proc/sys/kernel/random/boot_id").read_text(encoding="ascii").strip()
-        events = normalize(sys.stdin, host_id, boot_id)
+        events = normalize(sys.stdin, *read_scope())
         lines, parent_pid, child_pid = verify_workload(events, args.parent_comm, args.child_comm)
     except (OSError, ValueError) as exc:
         parser.exit(2, f"traceguard lifecycle lab: {exc}\n")
