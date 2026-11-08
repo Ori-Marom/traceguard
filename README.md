@@ -2,7 +2,7 @@
 
 **TraceGuard is a Linux security telemetry lab.** It captures process and network events with eBPF, links them to the process that generated them, and turns a saved capture into an investigation report with evidence you can inspect.
 
-[Demo video and release notes](https://github.com/Ori-Marom/traceguard/releases) · [Run the demo](docs/DEMO.md) · [Architecture](docs/ARCHITECTURE.md)
+[Demo video](https://github.com/Ori-Marom/traceguard/releases/download/v0.1.0/traceguard-demo.mp4) · [Release v0.1.0](https://github.com/Ori-Marom/traceguard/releases/tag/v0.1.0) · [Run the demo](docs/DEMO.md) · [Architecture](docs/ARCHITECTURE.md)
 
 ![TraceGuard investigation report showing the two refused connections that triggered an alert](docs/media/traceguard-investigation.jpg)
 
