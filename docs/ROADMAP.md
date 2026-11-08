@@ -59,7 +59,7 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Add a repeatable capture-to-report command.
 - [x] Add baseline and traced measurements with per-run capture counts and diagnostics.
 - [x] Run the demo and benchmark on WSL2 and record measured results.
-- [ ] Record the demo walkthrough.
+- [x] Record a short walkthrough of the demo output and investigation navigation.
 
 ## Validation strategy
 

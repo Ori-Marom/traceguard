@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Complete the demo walkthrough
+
+- Reviewed and accepted a short recording showing the demo command output and investigation report navigation. It shows a highlighted evidence row and the jump from the timeline to its process.
+- The browser shows a previously generated report. The capture-to-report flow was verified separately in the live WSL2 demo.
+- The recording completes the walkthrough milestone. This commit records its scope and does not include the video file.
+
 ## 2026-11-08 — Verify the demo and measure the pipeline on WSL2
 
 - Ran the live demo from capture through investigation report. Four connections produced one alert.
