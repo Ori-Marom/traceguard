@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Use a supported address cast in the IPv6 probe
+
+- bpftrace v0.20.2 rejected the `char *` cast before attaching.
+- The buffer read now uses a `uint64` address plus an eight-byte offset, marked as userspace with `uptr`. The version's `uptr` and `buf` implementations accept integer addresses.
+- WSL2 validation is pending.
+
 ## 2026-11-08 — Fix IPv6 address reads on bpftrace v0.20.2
 
 - The combined WSL2 lab captured all four connect attempts with the expected process identity, ports, and return codes. Both IPv6 addresses appeared as `::` instead of `::1`, so validation correctly rejected the capture.

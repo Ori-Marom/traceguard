@@ -35,7 +35,7 @@ tracepoint:syscalls:sys_enter_connect
                 if (args.addrlen >= 28) {
                     // sockaddr_in6 stores its 16 address bytes at offset 8.
                     // Mark the buffer pointer itself as userspace for bpftrace 0.20.
-                    @destination6[tid] = buf(uptr((char *)args.uservaddr + 8), 16);
+                    @destination6[tid] = buf(uptr((uint64)args.uservaddr + 8), 16);
                     @is_ipv6[tid] = 1;
                     @port[tid] = $port;
                 }
