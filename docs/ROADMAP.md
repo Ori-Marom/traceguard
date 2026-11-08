@@ -40,7 +40,7 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Add a local TCP workload with successful and refused connections.
 - [x] Verify both live IPv4 outcomes on WSL2.
 - [x] Extend the probe, workload, and replay to IPv6.
-- [ ] Verify IPv4 and IPv6 together on WSL2.
+- [x] Verify IPv4 and IPv6 together on WSL2.
 
 ## Validation strategy
 

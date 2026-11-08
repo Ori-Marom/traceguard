@@ -2,7 +2,7 @@
 
 An educational Linux endpoint detection and investigation platform, planned around eBPF telemetry.
 
-**Status: initial process sensor prototype. Scoped WSL2 labs verified live process lifecycle events, parent linkage, and outbound IPv4 connection outcomes. Both labs save JSON Lines captures.**
+**Status: initial process sensor prototype. Scoped WSL2 labs verified live process lifecycle events, parent linkage, and outbound IPv4 and IPv6 connection outcomes. Both labs save JSON Lines captures.**
 
 ## Goal
 

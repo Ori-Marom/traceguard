@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Verify the combined TCP lab on WSL2
+
+- The tagged process, sensor PID 2635, connected to `127.0.0.1:40717` and `[::1]:41737`.
+- The same process received `ECONNREFUSED` from `127.0.0.1:57659` and `[::1]:37065`.
+- The lab verified destination addresses, ports, return codes, and full process identity for all four attempts. It saved the validated capture locally.
+- The result verifies the blocking TCP loopback workload. The next roadmap stage is the detection engine.
+
 ## 2026-11-08 — Use a supported address cast in the IPv6 probe
 
 - bpftrace v0.20.2 rejected the `char *` cast before attaching.

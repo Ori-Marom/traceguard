@@ -22,4 +22,4 @@ Look under `connections` for the address, port, return code, and process identit
 - The recorded timestamp is the syscall return time. A return of zero is success. A negative return is a Linux errno. In particular, a nonblocking call returning `-EINPROGRESS` is pending and would require later evidence of completion.
 - The lab workload uses TCP. The syscall alone does not establish the socket transport, and this event does not claim a protocol.
 - The probe filters by the tagged task name and handles IPv4 and IPv6 destinations with nonzero ports. The capture stores the IPv6 address without an interface scope ID. UDP attribution and nonblocking completion are outside this lab.
-- The IPv4-only lab passed on WSL2 with bpftrace v0.20.2. Both families' TCP workloads and Python replay passed local checks. The combined eBPF probe still needs its first run on WSL2.
+- The combined lab passed on WSL2 with bpftrace v0.20.2. The capture contained one successful connection and one refused connection for each family. All four records matched the same tagged process.
