@@ -12,6 +12,8 @@ Start with a single host and local storage. Remote agents and distributed deploy
 
 A PID is reused and must not be treated as a permanent identity. Plan a key containing host ID, boot ID, PID, and process start time. Record parent identity when available, distinguish thread IDs from process IDs, and represent missing ancestry explicitly.
 
+PID values must carry their scope. The prototype reports process and parent IDs from the same kernel view. If the collector later adds namespace-local IDs, label their namespace explicitly and avoid joining them directly with kernel-view IDs.
+
 Execution replaces a process image; it does not necessarily create a new process. Capture fork/clone, successful exec, and exit as distinct event types when building the complete lifecycle model.
 
 ## Event envelope

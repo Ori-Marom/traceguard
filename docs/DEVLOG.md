@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Compare the shell and sensor views of PIDs
+
+- Ran the repository sensor with a Bash workload using bpftrace `-c`.
+- The sensor reported `bash pid=1830` and `sleep pid=1831 ppid=1830`. These events agree on the parent in the sensor's view.
+- The same workload printed `pid=1498 ppid=1497` from Bash. Comparing these numbers directly with the sensor IDs made the earlier procedure inconclusive. The discrepancy is consistent with different Linux PID namespace views.
+- Updated the lab to give both executables unique names per run and compare the parent link within the sensor output. The revised lab still needs to run on the developer's WSL2 instance.
+
 ## 2026-11-08 — Capture the first exec event
 
 - Confirmed that a temporary bpftrace program attached to `sched:sched_process_exec` on Ubuntu under WSL2 and captured `/usr/bin/true`.

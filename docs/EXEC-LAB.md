@@ -1,38 +1,27 @@
 # Verify the exec sensor on WSL2
 
-This lab checks that TraceGuard captures a successful exec and reports the correct process and parent IDs. It requires `bpftrace` and readable kernel BTF. Run from the root of the repository in Ubuntu.
-
-## Start capture
-
-In the first Ubuntu terminal:
+Run from the repository root in Ubuntu with bpftrace installed and kernel BTF available:
 
 ```bash
-sudo bpftrace sensor/exec.bt
+bash scripts/check-exec.sh
 ```
 
-Wait for `Attaching 1 probe...`. The sensor prints successful exec events from the Linux environment. Stop it with Ctrl+C after the experiment.
+The lab starts a Bash process and a child that runs `sleep`. It gives both temporary executable names with a shared random suffix so their exec events can be found in the same output. The workload runs under sudo as part of this lab, so its events may have `uid=0`.
 
-## Generate an event with known IDs
+1. Find `EXPECTED`. It lists the process names as `parent_comm` and `child_comm`.
+2. Find the two `EXEC` lines with those names.
+3. Confirm that the child's `ppid` equals the parent's `pid` in the sensor output.
 
-In a second Ubuntu terminal, run these commands in Bash:
-
-```bash
-/usr/bin/sleep 1 &
-child_pid=$!
-printf 'EXPECTED pid=%s ppid=%s\n' "$child_pid" "$BASHPID"
-wait "$child_pid"
-```
-
-The background command gives Bash a child PID in `$!`. `$BASHPID` is the PID of the Bash process running the commands. Find the `EXEC` line with the matching `pid` and `comm=sleep`. Confirm its `ppid` equals the shell PID printed above. Multiple execs can have the same `comm`, so match the PID as well.
+The values printed by Bash are local to its PID namespace. The sensor reads IDs from the kernel and may see different numbers for the same processes. Compare IDs within a single view and use the generated names to correlate across views. If either name is absent from the trace, the run is inconclusive.
 
 ## What the fields mean
 
 | Field | Meaning |
 | --- | --- |
 | `ts_ns` | Kernel timestamp in nanoseconds |
-| `pid` | Linux process ID |
-| `ppid` | Process ID of the task's real parent at exec time |
+| `pid` | Process ID in the sensor's kernel view |
+| `ppid` | Real parent's process ID in the same view at exec time |
 | `uid` | User ID reported by bpftrace |
 | `comm` | Short kernel task name, which can be truncated |
 
-This probe observes successful program execution, including when an existing process replaces its executable. Fork and exit events, stable process identity, persistent storage, executable paths, and loss accounting are later work. Test on a quiet lab instance and share only the synthetic `EXPECTED` line and matching `EXEC` line.
+The probe observes successful execs, including when an existing process replaces its executable. Fork and exit events, stable process identity, persistent storage, executable paths, and loss accounting are later work.

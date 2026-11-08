@@ -2,7 +2,7 @@
 
 An educational Linux endpoint detection and investigation platform, planned around eBPF telemetry.
 
-**Status: initial process sensor prototype. Basic eBPF exec capture succeeded on WSL2. Validation of parent PID in the repository sensor is pending.**
+**Status: initial process sensor prototype. The repository sensor captured a Bash-to-sleep parent link on WSL2. The lab now identifies both programs by name to handle different PID namespace views.**
 
 ## Goal
 
