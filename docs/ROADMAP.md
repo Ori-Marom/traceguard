@@ -46,7 +46,7 @@ Progress is based on demonstrated behavior, not elapsed time.
 
 - [x] Detect connection refusals to distinct endpoints within a bounded window.
 - [x] Include source sequence IDs and check positive, negative, and incomplete captures.
-- [ ] Evaluate the rule on a saved WSL2 network capture.
+- [x] Evaluate the rule on a saved WSL2 network capture.
 
 ## Validation strategy
 

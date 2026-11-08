@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Verify the first rule against captured WSL2 traffic
+
+- The saved dual-stack lab capture produced one low-severity alert for the observed process with PID 2635.
+- Evidence records 3 and 5 reported `ECONNREFUSED` for `127.0.0.1:57659` and `[::1]:37065`. The measured interval was 466,665 ns, within the inclusive one-second window.
+- This validates the offline detector against real lab telemetry. The capture itself stays local.
+
 ## 2026-11-08 — Add the first detection rule
 
 - Added an offline detector for two connection refusals to distinct endpoints by the same process within one second. It reports low severity and includes both evidence records.

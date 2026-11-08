@@ -17,3 +17,5 @@ The same command accepts a local JSON Lines capture from `scripts/check-network.
 - `process_observed` reports whether replay found a lifecycle record for the process. The alert can still be emitted from two valid connection records. `lost_events` reports known loss for the capture. An incomplete capture may miss matches, and the detector does not count events it did not observe.
 
 The threshold is chosen for the controlled lab. Normal software can generate the same pattern. This rule identifies a behavior for review and makes no claim that an intrusion took place. Detection runs on saved captures.
+
+The rule was also verified on a saved WSL2 dual-stack loopback capture. It produced one alert with the two refused destinations and their input sequence numbers.
