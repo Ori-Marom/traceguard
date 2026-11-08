@@ -1,7 +1,7 @@
 """Replay a TraceGuard v1 JSON Lines capture into a process snapshot."""
 
 import argparse
-from ipaddress import IPv4Address
+from ipaddress import ip_address
 import json
 from pathlib import Path
 
@@ -58,9 +58,9 @@ def _load_events(lines):
 
 def _connection(event, identity):
     address = event.get("address")
-    if not isinstance(address, str):
-        raise ValueError("address must be an IPv4 string")
-    address = str(IPv4Address(address))
+    if not isinstance(address, str) or "%" in address:
+        raise ValueError("address must be an IPv4 or unscoped IPv6 string")
+    address = str(ip_address(address))
     port = _integer(event.get("port"), "port", 1)
     if port > 65535:
         raise ValueError("port must be <= 65535")

@@ -1,4 +1,4 @@
-"""Open two blocking TCP connections to a loopback test endpoint."""
+"""Check blocking TCP success and refusal over IPv4 and IPv6 loopback."""
 
 import errno
 import json
@@ -7,24 +7,21 @@ import socket
 import sys
 
 
-LOOPBACK = "127.0.0.1"
-
-
-def run():
+def check_family(family, address):
     with (
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener,
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM) as reserved,
+        socket.socket(family, socket.SOCK_STREAM) as listener,
+        socket.socket(family, socket.SOCK_STREAM) as reserved,
     ):
-        listener.bind((LOOPBACK, 0))
+        listener.bind((address, 0))
         listener.listen()
-        reserved.bind((LOOPBACK, 0))
+        reserved.bind((address, 0))
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+        with socket.socket(family, socket.SOCK_STREAM) as client:
             client.connect(listener.getsockname())
             accepted, _ = listener.accept()
             accepted.close()
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+        with socket.socket(family, socket.SOCK_STREAM) as client:
             try:
                 client.connect(reserved.getsockname())
             except OSError as exc:
@@ -34,13 +31,17 @@ def run():
                 raise RuntimeError("connection to the reserved port unexpectedly succeeded")
 
         return [
-            {"address": LOOPBACK, "port": listener.getsockname()[1], "result": 0},
+            {"address": address, "port": listener.getsockname()[1], "result": 0},
             {
-                "address": LOOPBACK,
+                "address": address,
                 "port": reserved.getsockname()[1],
                 "result": -errno.ECONNREFUSED,
             },
         ]
+
+
+def run():
+    return check_family(socket.AF_INET, "127.0.0.1") + check_family(socket.AF_INET6, "::1")
 
 
 if __name__ == "__main__":

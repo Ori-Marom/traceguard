@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Add IPv6 to the TCP connection lab
+
+- Added IPv6 sockaddr decoding and retained syscall return values and exact process attribution.
+- The lab now expects successful and refused connections over both loopback address families in one capture.
+- All eleven Python tests passed. The local socket workload also confirmed both outcomes on IPv4 and IPv6.
+- The combined eBPF probe still needs live validation on the target WSL2 instance.
+
 ## 2026-11-08 — Verify live IPv4 connection outcomes on WSL2
 
 - After separating the bpftrace filters, the live TCP lab passed on WSL2 with bpftrace v0.20.2.

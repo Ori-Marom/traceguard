@@ -1,6 +1,7 @@
 """Verify that the scoped network capture matches the local TCP workload."""
 
 import argparse
+import errno
 import json
 from pathlib import Path
 import sys
@@ -46,12 +47,13 @@ def main():
         parser.exit(2, f"traceguard network lab: {exc}\n")
 
     print("\n".join(lines))
-    print(
-        f"PASS TCP connect: pid={pid}, "
-        f"{expected[0]['address']}:{expected[0]['port']} connected, "
-        f"{expected[1]['address']}:{expected[1]['port']} refused",
-        file=sys.stderr,
-    )
+    outcomes = []
+    for item in expected:
+        address, port, result = item["address"], item["port"], item["result"]
+        endpoint = f"[{address}]:{port}" if ":" in address else f"{address}:{port}"
+        outcome = "connected" if result == 0 else errno.errorcode.get(-result, str(result))
+        outcomes.append(f"{endpoint} {outcome}")
+    print(f"PASS TCP connect: pid={pid}, {', '.join(outcomes)}", file=sys.stderr)
 
 
 if __name__ == "__main__":

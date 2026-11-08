@@ -32,7 +32,7 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 - [Architecture proposal](docs/ARCHITECTURE.md)
 - [Event format and replay demo](docs/EVENTS.md)
 - [Live lifecycle lab](docs/LIFECYCLE-LAB.md)
-- [Outbound IPv4 connection lab](docs/NETWORK-LAB.md)
+- [Outbound IPv4 and IPv6 connection lab](docs/NETWORK-LAB.md)
 - [Roadmap and acceptance criteria](docs/ROADMAP.md)
 - [Development journal](docs/DEVLOG.md)
 - [Contribution workflow](CONTRIBUTING.md)

@@ -9,6 +9,15 @@ struct tg_sockaddr_in {
     unsigned char padding[8];
 };
 
+struct tg_sockaddr_in6 {
+    unsigned short family;
+    unsigned char port_high;
+    unsigned char port_low;
+    unsigned int flow_info;
+    char address[16];
+    unsigned int scope_id;
+};
+
 // Scope both exec and connect probes to the lab's randomly named executable.
 tracepoint:sched:sched_process_exec
 /comm == str($1)/
@@ -25,11 +34,18 @@ tracepoint:syscalls:sys_enter_connect
     // Check the kernel tracepoint field separately from the task-name filter.
     if (args.addrlen >= 16) {
         $address = uptr((struct tg_sockaddr_in *)args.uservaddr);
-        if ($address->family == 2) {
-            $port = ((uint32)$address->port_high * 256) + $address->port_low;
-            if ($port != 0) {
-                @address[tid] = $address->address;
+        // Both address families use the same offsets for the family and port.
+        $port = ((uint32)$address->port_high * 256) + $address->port_low;
+        if ($port != 0) {
+            if ($address->family == 2) {
+                @destination[tid] = ntop(2, $address->address);
                 @port[tid] = $port;
+            } else if ($address->family == 10) {
+                if (args.addrlen >= 28) {
+                    $address6 = uptr((struct tg_sockaddr_in6 *)args.uservaddr);
+                    @destination[tid] = ntop(10, $address6->address);
+                    @port[tid] = $port;
+                }
             }
         }
     }
@@ -40,13 +56,13 @@ tracepoint:syscalls:sys_exit_connect
 {
     printf("TG\tconnect\t%llu\t%d\t%llu\t%s\t%d\t%lld\n",
            nsecs(monotonic), pid, curtask->group_leader->start_time,
-           ntop(2, (uint32)@address[tid]), @port[tid], args.ret);
-    delete(@address[tid]);
+           @destination[tid], @port[tid], args.ret);
+    delete(@destination[tid]);
     delete(@port[tid]);
 }
 
 END
 {
-    clear(@address);
+    clear(@destination);
     clear(@port);
 }

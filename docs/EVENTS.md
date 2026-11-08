@@ -32,7 +32,7 @@ Each lifecycle or connect event has a `process` object containing `pid` and `sta
 | `fork` | `process` is the newly created process. `parent` is its parent identity or null if unavailable |
 | `exec` | Successful executable replacement. `parent` is the observed parent identity or null. `comm` is the short task name. `comm_truncated` is true, false, or null when unknown |
 | `exit` | Exit of the process identity. Future live instrumentation must distinguish process exit from individual thread exit |
-| `connect` | IPv4 destination `address`, destination `port` (1–65535), and signed syscall `result`. The timestamp is taken at syscall return |
+| `connect` | IPv4 or unscoped IPv6 destination `address`, destination `port` (1–65535), and signed syscall `result`. The timestamp is taken at syscall return |
 | `loss` | Positive integer `count` of newly reported dropped events. `ts_ns` is the time the loss was reported |
 
 ```json
