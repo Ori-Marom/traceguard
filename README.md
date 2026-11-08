@@ -2,7 +2,7 @@
 
 An educational Linux endpoint detection and investigation platform, planned around eBPF telemetry.
 
-**Status: initial process sensor prototype. The tagged Bash-to-sleep lab verified successful exec capture and parent linkage on WSL2.**
+**Status: initial process sensor prototype. A scoped WSL2 lab verified live fork, exec, and exit events, parent linkage, and JSON Lines capture.**
 
 ## Goal
 
@@ -22,7 +22,7 @@ Development starts on Windows using Ubuntu under WSL2. The Linux sensor observes
 
 ## First milestone
 
-The first lab captured a short-lived command and verified its parent PID using a tagged Bash workload. The [offline replay demo](docs/EVENTS.md) reconstructs a process snapshot from structured lifecycle events. Live capture integration is the next milestone.
+The first lab captured a short-lived command and verified its parent PID using a tagged Bash workload. The [offline replay demo](docs/EVENTS.md) reconstructs a process snapshot from structured lifecycle events. The live lifecycle lab records and validates the same format for a controlled workload.
 
 Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with known process and parent IDs.
 
@@ -40,8 +40,8 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 
 | Component | Responsibility | Status |
 | --- | --- | --- |
-| Linux sensor | Kernel telemetry and loss counters | Exec prototype |
-| Collector | Validation, normalization, local storage | Offline replay prototype |
+| Linux sensor | Kernel telemetry and loss counters | Scoped lifecycle capture verified |
+| Collector | Validation, normalization, local storage | Local JSON Lines and replay |
 | Detection engine | Stateful rules and evidence references | Planned |
 | Investigation API/UI | Process tree and event timeline | Planned |
 | Lab and benchmarks | Reproducible correctness and overhead checks | Planned |

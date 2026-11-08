@@ -31,8 +31,8 @@ Progress is based on demonstrated behavior, not elapsed time.
 
 - [x] Define the v1 event format and process identity.
 - [x] Replay synthetic events and verify PID reuse, missing parents, and out-of-order input.
-- [ ] Capture live fork and process exit events on WSL2.
-- [ ] Normalize and save a live capture for replay.
+- [x] Capture live fork and process exit events for the scoped workload on WSL2.
+- [x] Normalize a live capture, validate it with replay, and save it locally.
 
 ## Validation strategy
 

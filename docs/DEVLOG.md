@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Verify live lifecycle capture on WSL2
+
+- The tagged workload passed the live `fork → exec → exit` check on WSL2 with bpftrace v0.20.2.
+- The sensor tracked child PID 2212 with parent PID 2211. The normalizer verified the child identity stayed consistent and the full parent identity matched at fork and exec.
+- The lab saved the validated JSON Lines capture under `captures/` on the developer's machine.
+- This verification covers the supplied single-threaded workload. Network telemetry is the next roadmap stage.
+
 ## 2026-11-08 — Add the live lifecycle lab
 
 - Confirmed bpftrace v0.20.2 and the fork, exec, and exit tracepoints on the development WSL2 machine.
