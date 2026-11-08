@@ -38,7 +38,7 @@ Progress is based on demonstrated behavior, not elapsed time.
 
 - [x] Add an IPv4 connect event and join it to the full process identity in replay.
 - [x] Add a local TCP workload with successful and refused connections.
-- [ ] Verify both live outcomes on WSL2.
+- [x] Verify both live IPv4 outcomes on WSL2.
 - [ ] Extend the probe to IPv6 and validate it on WSL2.
 
 ## Validation strategy

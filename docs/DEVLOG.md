@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Verify live IPv4 connection outcomes on WSL2
+
+- After separating the bpftrace filters, the live TCP lab passed on WSL2 with bpftrace v0.20.2.
+- Both attempts matched the tagged exec by full process identity. The sensor reported PID 2402, a successful connection to `127.0.0.1:48465`, and a refused connection to `127.0.0.1:55343`.
+- The lab saved the validated JSON Lines capture under `captures/` on the developer's machine.
+- This run covers blocking TCP over IPv4 loopback. IPv6 remains the next network telemetry check.
+
 ## 2026-11-08 — Fix the IPv4 lab filter on bpftrace v0.20.2
 
 - The first WSL2 run reported `Addrspace mismatch` at the logical AND joining the task-name and socket-address length checks.
