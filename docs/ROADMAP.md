@@ -52,7 +52,7 @@ Progress is based on demonstrated behavior, not elapsed time.
 
 - [x] Generate a self-contained HTML report from a saved capture.
 - [x] Link alerts to process nodes and exact timeline evidence.
-- [ ] Open a report from a saved WSL2 capture and verify navigation in the browser.
+- [x] Open a report from a saved WSL2 capture and verify navigation in the browser.
 
 ## Validation strategy
 

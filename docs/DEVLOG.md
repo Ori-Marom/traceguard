@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Verify the investigation report in the browser
+
+- Opened the local HTML report generated from the saved WSL2 TCP capture.
+- Verified that the alert's Event #5 link jumps to and highlights the corresponding timeline row for the refused connection to `[::1]:37065`.
+- The report remains local with the capture. The next roadmap stage is evaluation and a reproducible demo.
+
 ## 2026-11-08 — Add the offline investigation report
 
 - Added a local HTML report with expandable alerts, a process tree, and a source-event timeline.
