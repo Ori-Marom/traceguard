@@ -1,5 +1,13 @@
 # Development journal
 
+## 2026-11-08 — Inspect the WSL2 environment
+
+- PowerShell reported WSL `2.6.1.0`, with Ubuntu and WSL2 as defaults.
+- Ubuntu reported Linux `6.6.87.2-microsoft-standard-WSL2` on `x86_64`.
+- `/sys/kernel/btf/vmlinux` was listed with read permissions, and Git reported version `2.43.0`.
+- The BTF file listing verifies availability of the file. Attaching an eBPF program and observing an event are still pending.
+- Next check for [#1](https://github.com/Ori-Marom/traceguard/issues/1): attach a temporary bpftrace program to `sched:sched_process_exec` and verify it emits an event for `/usr/bin/true`. This is a feature check ahead of the TraceGuard sensor.
+
 ## 2026-11-06 — Project foundation
 
 ### Completed
