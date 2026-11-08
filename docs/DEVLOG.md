@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Fix the IPv4 lab filter on bpftrace v0.20.2
+
+- The first WSL2 run reported `Addrspace mismatch` at the logical AND joining the task-name and socket-address length checks.
+- Moved the length check into the probe body. Both checks still run before reading the userspace address. The lab continues to reject bpftrace diagnostics.
+- Live verification of the revised probe is pending.
+
 ## 2026-11-08 — Add the first outbound connection lab
 
 - Added an IPv4 connect probe that records the requested destination and syscall result for a tagged process.

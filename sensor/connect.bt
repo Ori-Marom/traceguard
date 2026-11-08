@@ -20,14 +20,17 @@ tracepoint:sched:sched_process_exec
 }
 
 tracepoint:syscalls:sys_enter_connect
-/comm == str($1) && args.addrlen >= 16/
+/comm == str($1)/
 {
-    $address = uptr((struct tg_sockaddr_in *)args.uservaddr);
-    if ($address->family == 2) {
-        $port = ((uint32)$address->port_high * 256) + $address->port_low;
-        if ($port != 0) {
-            @address[tid] = $address->address;
-            @port[tid] = $port;
+    // Check the kernel tracepoint field separately from the task-name filter.
+    if (args.addrlen >= 16) {
+        $address = uptr((struct tg_sockaddr_in *)args.uservaddr);
+        if ($address->family == 2) {
+            $port = ((uint32)$address->port_high * 256) + $address->port_low;
+            if ($port != 0) {
+                @address[tid] = $address->address;
+                @port[tid] = $port;
+            }
         }
     }
 }
