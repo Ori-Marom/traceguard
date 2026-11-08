@@ -18,6 +18,8 @@ Execution replaces a process image; it does not necessarily create a new process
 
 ## Event envelope
 
+The [v1 event contract](EVENTS.md) defines the current offline replay input. The fields below describe the broader target envelope for live collection.
+
 Proposed common fields:
 
 - schema_version, event_id, event_type

@@ -22,7 +22,7 @@ Development starts on Windows using Ubuntu under WSL2. The Linux sensor observes
 
 ## First milestone
 
-The first lab captured a short-lived command and verified its parent PID using a tagged Bash workload. The next milestone is to collect and replay structured process lifecycle events.
+The first lab captured a short-lived command and verified its parent PID using a tagged Bash workload. The [offline replay demo](docs/EVENTS.md) reconstructs a process snapshot from structured lifecycle events. Live capture integration is the next milestone.
 
 Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with known process and parent IDs.
 
@@ -30,6 +30,7 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 
 - [Development setup](docs/SETUP.md)
 - [Architecture proposal](docs/ARCHITECTURE.md)
+- [Event format and replay demo](docs/EVENTS.md)
 - [Roadmap and acceptance criteria](docs/ROADMAP.md)
 - [Development journal](docs/DEVLOG.md)
 - [Contribution workflow](CONTRIBUTING.md)
@@ -39,7 +40,7 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 | Component | Responsibility | Status |
 | --- | --- | --- |
 | Linux sensor | Kernel telemetry and loss counters | Exec prototype |
-| Collector | Validation, normalization, local storage | Planned |
+| Collector | Validation, normalization, local storage | Offline replay prototype |
 | Detection engine | Stateful rules and evidence references | Planned |
 | Investigation API/UI | Process tree and event timeline | Planned |
 | Lab and benchmarks | Reproducible correctness and overhead checks | Planned |

@@ -27,6 +27,13 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Add the repository prototype and a repeatable lab.
 - [x] Run the tagged lab on WSL2 and verify the child PPID matches the parent's PID in the sensor output.
 
+## Stage 2: lifecycle and storage
+
+- [x] Define the v1 event format and process identity.
+- [x] Replay synthetic events and verify PID reuse, missing parents, and out-of-order input.
+- [ ] Capture live fork and process exit events on WSL2.
+- [ ] Normalize and save a live capture for replay.
+
 ## Validation strategy
 
 Compare capture against a controlled workload with known process count and relationships. Add stress tests only once the basic capture is correct. Record kernel version, hardware, workload, duration, and losses with every benchmark.

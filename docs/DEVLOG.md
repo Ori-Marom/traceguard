@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Define process events and offline replay
+
+- Defined v1 JSON Lines events and a process key scoped to a host and boot. The key includes process start time to distinguish reused PIDs.
+- Added a Python replay command and a synthetic fixture for fork, exec, exit, and loss. Replay preserves unknown parent and truncation information.
+- Ran four regression tests and the CLI demo locally. The fixture produced two separate records for PID 42 and left the unmatched parent identity unresolved.
+- Next: collect the lifecycle events from the Linux sensor and validate the timestamp and identity mapping on WSL2.
+
 ## 2026-11-08 — Verify the tagged parent-child lab
 
 - Confirmed the repository was cloned and the lab ran inside Ubuntu on WSL2.

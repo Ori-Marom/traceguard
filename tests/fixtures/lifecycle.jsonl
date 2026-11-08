@@ -1,0 +1,8 @@
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":1,"ts_ns":100,"type":"exec","process":{"pid":10,"start_ns":80},"parent":null,"comm":"bash","comm_truncated":false}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":5,"ts_ns":160,"type":"exit","process":{"pid":42,"start_ns":120}}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":4,"ts_ns":140,"type":"exec","process":{"pid":42,"start_ns":120},"parent":{"pid":10,"start_ns":80},"comm":"sleep","comm_truncated":false}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":3,"ts_ns":120,"type":"fork","process":{"pid":42,"start_ns":120},"parent":{"pid":10,"start_ns":80}}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":7,"ts_ns":200,"type":"exec","process":{"pid":42,"start_ns":190},"parent":{"pid":10,"start_ns":80},"comm":"date","comm_truncated":false}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":6,"ts_ns":190,"type":"fork","process":{"pid":42,"start_ns":190},"parent":{"pid":10,"start_ns":80}}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":2,"ts_ns":110,"type":"exec","process":{"pid":55,"start_ns":105},"parent":{"pid":42,"start_ns":30},"comm":"long-task-name-","comm_truncated":true}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":8,"ts_ns":240,"type":"loss","count":2}
