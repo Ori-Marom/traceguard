@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Add the first detection rule
+
+- Added an offline detector for two connection refusals to distinct endpoints by the same process within one second. It reports low severity and includes both evidence records.
+- Passed seventeen Python tests and verified the CLI demo on the synthetic capture. Checks cover PID reuse, endpoint repetition, window boundaries, record ordering, and known event loss.
+- Next: run the detector on the developer's saved WSL2 network capture.
+
 ## 2026-11-08 — Verify the combined TCP lab on WSL2
 
 - The tagged process, sensor PID 2635, connected to `127.0.0.1:40717` and `[::1]:41737`.

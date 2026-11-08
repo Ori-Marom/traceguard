@@ -46,7 +46,7 @@ A `connect` event records a call result. Zero means success. A negative value is
 - Sort by `ts_ns`, then `seq`, and emit processes sorted by PID and start time. Shuffling input lines does not change a valid capture's result.
 - Retain the most recent known parent reference. `parent: null` in the snapshot means no parent identity was observed. A reference with `observed: false` means that exact parent identity has no record in the capture. A matching PID with another start time does not resolve it.
 - `fork_seen: false` and `exit_ns: null` indicate missing evidence for those events. An absent exit does not prove a process was still alive.
-- List connect records in timestamp and sequence order. `process_observed` is true only when the same PID and start time occur in a lifecycle record in this capture. A connect event alone does not create a process node.
+- List connect records in timestamp and sequence order, preserving the original `seq` for evidence references. `process_observed` is true only when the same PID and start time occur in a lifecycle record in this capture. A connect event alone does not create a process node.
 - Sum explicit loss reports. Sequence gaps alone do not establish loss, and a zero reported count is not a completeness guarantee.
 - Invalid records fail with a line number and a nonzero exit status. Mixed hosts or boots and duplicate sequences are rejected. Replay holds one capture in memory and is intended for local experiments.
 

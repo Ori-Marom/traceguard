@@ -42,6 +42,12 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Extend the probe, workload, and replay to IPv6.
 - [x] Verify IPv4 and IPv6 together on WSL2.
 
+## Stage 4: detection engine
+
+- [x] Detect connection refusals to distinct endpoints within a bounded window.
+- [x] Include source sequence IDs and check positive, negative, and incomplete captures.
+- [ ] Evaluate the rule on a saved WSL2 network capture.
+
 ## Validation strategy
 
 Compare capture against a controlled workload with known process count and relationships. Add stress tests only once the basic capture is correct. Record kernel version, hardware, workload, duration, and losses with every benchmark.

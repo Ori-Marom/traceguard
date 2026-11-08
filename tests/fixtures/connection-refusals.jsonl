@@ -1,0 +1,5 @@
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":1,"ts_ns":100,"type":"exec","process":{"pid":42,"start_ns":80},"parent":null,"comm":"tcp-lab","comm_truncated":false}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":2,"ts_ns":200,"type":"connect","process":{"pid":42,"start_ns":80},"address":"127.0.0.1","port":41001,"result":0}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":3,"ts_ns":300,"type":"connect","process":{"pid":42,"start_ns":80},"address":"127.0.0.1","port":41002,"result":-111}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":4,"ts_ns":400,"type":"connect","process":{"pid":42,"start_ns":80},"address":"::1","port":41003,"result":0}
+{"version":1,"host_id":"lab","boot_id":"boot-a","seq":5,"ts_ns":500,"type":"connect","process":{"pid":42,"start_ns":80},"address":"::1","port":41004,"result":-111}

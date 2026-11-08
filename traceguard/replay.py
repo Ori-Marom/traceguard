@@ -68,6 +68,7 @@ def _connection(event, identity):
     if result > 0:
         raise ValueError("result must be zero or a negative Linux errno")
     return {
+        "seq": event["seq"],
         "ts_ns": event["ts_ns"],
         "process": {"pid": identity[0], "start_ns": identity[1]},
         "address": address,
