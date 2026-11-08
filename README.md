@@ -31,6 +31,7 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 - [Development setup](docs/SETUP.md)
 - [Architecture proposal](docs/ARCHITECTURE.md)
 - [Event format and replay demo](docs/EVENTS.md)
+- [Live lifecycle lab](docs/LIFECYCLE-LAB.md)
 - [Roadmap and acceptance criteria](docs/ROADMAP.md)
 - [Development journal](docs/DEVLOG.md)
 - [Contribution workflow](CONTRIBUTING.md)

@@ -6,7 +6,7 @@ TraceGuard stores one JSON object per line. Each capture belongs to one host and
 python3 -m traceguard.replay tests/fixtures/lifecycle.jsonl
 ```
 
-The checked-in capture is synthetic. The live bpftrace prototype currently emits text exec events. Converting live fork, exec, and exit events into this format is the next integration task.
+The checked-in capture is synthetic. The [live lifecycle lab](LIFECYCLE-LAB.md) includes a scoped bpftrace experiment and a normalizer for this format.
 
 ## Common fields
 

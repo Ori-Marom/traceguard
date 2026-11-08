@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Add the live lifecycle lab
+
+- Confirmed bpftrace v0.20.2 and the fork, exec, and exit tracepoints on the development WSL2 machine.
+- Added a scoped lifecycle probe, a Python normalizer, and a lab that checks the child's three-event timeline and exact parent identity before saving a capture.
+- Ran seven Python regression tests and checked the shell script syntax. The new probe has not yet been run on WSL2.
+- Next: run the lifecycle lab on the target kernel and verify it saves a replayable JSON Lines capture.
+
 ## 2026-11-08 — Define process events and offline replay
 
 - Defined v1 JSON Lines events and a process key scoped to a host and boot. The key includes process start time to distinguish reused PIDs.

@@ -1,0 +1,55 @@
+#!/usr/bin/env bpftrace
+
+// $1 is the unique name of the Bash process started by the lab.
+tracepoint:sched:sched_process_exec
+{
+    $pid = (uint32)pid;
+    $start = curtask->start_time;
+    if (comm == str($1)) {
+        @tracked[$pid] = $start;
+    }
+
+    if ($start > 0 && @tracked[$pid] == $start) {
+        $parent = curtask->real_parent;
+        printf("TG\texec\t%llu\t%d\t%llu\t%d\t%llu\t%s\n",
+               nsecs(monotonic), $pid, $start,
+               $parent->tgid, $parent->group_leader->start_time, comm);
+    }
+}
+
+rawtracepoint:sched_process_fork
+{
+    $creator = (struct task_struct *)arg0;
+    $child = (struct task_struct *)arg1;
+    $creator_pid = (uint32)$creator->tgid;
+    $creator_start = $creator->group_leader->start_time;
+
+    if ($creator_start > 0 && @tracked[$creator_pid] == $creator_start) {
+        if ($child->pid != $child->tgid) {
+            printf("TG_UNSUPPORTED: tracked workload created a thread\n");
+        } else {
+            $pid = (uint32)$child->tgid;
+            $start = $child->start_time;
+            $parent = $child->real_parent;
+            @tracked[$pid] = $start;
+            printf("TG\tfork\t%llu\t%d\t%llu\t%d\t%llu\n",
+                   nsecs(monotonic), $pid, $start,
+                   $parent->tgid, $parent->group_leader->start_time);
+        }
+    }
+}
+
+tracepoint:sched:sched_process_exit
+{
+    $pid = (uint32)pid;
+    $start = curtask->start_time;
+    if (tid == pid && $start > 0 && @tracked[$pid] == $start) {
+        printf("TG\texit\t%llu\t%d\t%llu\n", nsecs(monotonic), $pid, $start);
+        delete(@tracked[$pid]);
+    }
+}
+
+END
+{
+    clear(@tracked);
+}
