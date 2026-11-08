@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Verify the demo and measure the pipeline on WSL2
+
+- Ran the live demo from capture through investigation report. Four connections produced one alert.
+- All three baseline and all three traced samples completed. Each traced sample captured 400 of 400 expected connections, for a total of 1,200. No event loss was reported.
+- Median wall time was 30.659 ms baseline and 553.712 ms traced. Median CPU time was 29.215 ms baseline and 42.643 ms traced. Median reported peak RSS was 15,872 KiB in both modes.
+- Recorded the workload, environment, per-sample observations, and measurement limits in [DEMO.md](DEMO.md#measured-wsl2-run). The recorded walkthrough remains pending.
+
 ## 2026-11-08 — Add the reproducible demo and benchmark
 
 - Added a CLI that runs the network capture, validates the first rule, and generates a local investigation report.

@@ -33,3 +33,18 @@ This generates the demo report first. It then runs three samples per mode, alter
 The benchmark records the kernel, architecture, logical CPU count, and bpftrace version. Medians use successful runs only and include the sample count. Failed runs retain their logs and are excluded from medians. A zero loss count and matching workload counts verify these samples. They do not establish a general drop rate or guarantee capture under heavier load. The timing differences compare full commands and do not isolate per-event kernel overhead.
 
 The generated data stays under the ignored `captures/` directory. Review logs before sharing them.
+
+## Measured WSL2 run
+
+Ubuntu on WSL2 used kernel `6.6.87.2-microsoft-standard-WSL2`, x86_64, 12 logical CPUs, and bpftrace v0.20.2. The demo saved an investigation report for four captured connections and one alert. The benchmark used three samples per mode and 100 workload batches per sample.
+
+| Sample | Mode | Wall time (ms) | CPU time (ms) | Peak RSS (KiB) | Observed / expected connects | Reported loss |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | Baseline | 31.634 | 27.069 | 15,104 | — | — |
+| 2 | Baseline | 30.659 | 30.142 | 15,872 | — | — |
+| 3 | Baseline | 29.733 | 29.215 | 15,872 | — | — |
+| 1 | Traced | 553.712 | 43.899 | 15,104 | 400 / 400 | 0 |
+| 2 | Traced | 552.222 | 39.349 | 15,872 | 400 / 400 | 0 |
+| 3 | Traced | 566.686 | 42.643 | 15,872 | 400 / 400 | 0 |
+
+The baseline medians were 30.659 ms wall time, 29.215 ms CPU, and 15,872 KiB peak RSS. The traced medians were 553.712 ms wall time, 42.643 ms CPU, and 15,872 KiB peak RSS. The traced command includes bpftrace startup and attachment, validation, and capture writing. Identical peak RSS readings describe the reported maximum and cannot establish aggregate concurrent memory use. These samples covered 1,200 expected connection records on a controlled loopback workload.
