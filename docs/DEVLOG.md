@@ -1,5 +1,13 @@
 # Development journal
 
+## 2026-11-08 — Verify the tagged parent-child lab
+
+- Confirmed the repository was cloned and the lab ran inside Ubuntu on WSL2.
+- Observed parent `tgp-x52aoH` with sensor PID `1898` and child `tgc-x52aoH` with sensor PID `1899` and PPID `1898`. Both names matched the workload's independently printed markers.
+- Bash reported its own PID as `1565` and the child's as `1566`. Parent linkage agreed within each PID view.
+- Both expected exec events were present. This run verifies the controlled parent-child case. It does not quantify event loss under load.
+- Next: define the event schema, identity across PID reuse, and replay fixtures in [#3](https://github.com/Ori-Marom/traceguard/issues/3).
+
 ## 2026-11-08 — Compare the shell and sensor views of PIDs
 
 - Ran the repository sensor with a Bash workload using bpftrace `-c`.

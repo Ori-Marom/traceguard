@@ -14,6 +14,12 @@ The lab starts a Bash process and a child that runs `sleep`. It gives both tempo
 
 The values printed by Bash are local to its PID namespace. The sensor reads IDs from the kernel and may see different numbers for the same processes. Compare IDs within a single view and use the generated names to correlate across views. If either name is absent from the trace, the run is inconclusive.
 
+## Verified WSL2 result
+
+The tagged test captured both expected exec events. The child reported `ppid=1898`, matching the parent's `pid=1898`. Bash reported its local parent ID as `1565` and its local child ID as `1566`. Both expected events were observed in this run. Event loss under load has not been measured.
+
+The sensor and the short-lived workload exit when the workload finishes in the `-c` run. The script removes its temporary directory on exit. For a sensor started without `-c`, stop it with Ctrl+C.
+
 ## What the fields mean
 
 | Field | Meaning |

@@ -2,7 +2,7 @@
 
 An educational Linux endpoint detection and investigation platform, planned around eBPF telemetry.
 
-**Status: initial process sensor prototype. The repository sensor captured a Bash-to-sleep parent link on WSL2. The lab now identifies both programs by name to handle different PID namespace views.**
+**Status: initial process sensor prototype. The tagged Bash-to-sleep lab verified successful exec capture and parent linkage on WSL2.**
 
 ## Goal
 
@@ -22,7 +22,7 @@ Development starts on Windows using Ubuntu under WSL2. The Linux sensor observes
 
 ## First milestone
 
-Capture a short-lived command, show its PID and parent PID, and preserve the event for inspection. Validate this with real lab events before building the UI.
+The first lab captured a short-lived command and verified its parent PID using a tagged Bash workload. The next milestone is to collect and replay structured process lifecycle events.
 
 Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with known process and parent IDs.
 
