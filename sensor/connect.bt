@@ -9,15 +9,6 @@ struct tg_sockaddr_in {
     unsigned char padding[8];
 };
 
-struct tg_sockaddr_in6 {
-    unsigned short family;
-    unsigned char port_high;
-    unsigned char port_low;
-    unsigned int flow_info;
-    char address[16];
-    unsigned int scope_id;
-};
-
 // Scope both exec and connect probes to the lab's randomly named executable.
 tracepoint:sched:sched_process_exec
 /comm == str($1)/
@@ -42,8 +33,10 @@ tracepoint:syscalls:sys_enter_connect
                 @port[tid] = $port;
             } else if ($address->family == 10) {
                 if (args.addrlen >= 28) {
-                    $address6 = uptr((struct tg_sockaddr_in6 *)args.uservaddr);
-                    @destination[tid] = ntop(10, $address6->address);
+                    // sockaddr_in6 stores its 16 address bytes at offset 8.
+                    // Mark the buffer pointer itself as userspace for bpftrace 0.20.
+                    @destination6[tid] = buf(uptr((char *)args.uservaddr + 8), 16);
+                    @is_ipv6[tid] = 1;
                     @port[tid] = $port;
                 }
             }
@@ -54,15 +47,25 @@ tracepoint:syscalls:sys_enter_connect
 tracepoint:syscalls:sys_exit_connect
 /@port[tid] != 0/
 {
-    printf("TG\tconnect\t%llu\t%d\t%llu\t%s\t%d\t%lld\n",
-           nsecs(monotonic), pid, curtask->group_leader->start_time,
-           @destination[tid], @port[tid], args.ret);
-    delete(@destination[tid]);
+    if (@is_ipv6[tid] != 0) {
+        printf("TG\tconnect\t%llu\t%d\t%llu\tv6hex:%rh\t%d\t%lld\n",
+               nsecs(monotonic), pid, curtask->group_leader->start_time,
+               @destination6[tid], @port[tid], args.ret);
+        delete(@destination6[tid]);
+        delete(@is_ipv6[tid]);
+    } else {
+        printf("TG\tconnect\t%llu\t%d\t%llu\t%s\t%d\t%lld\n",
+               nsecs(monotonic), pid, curtask->group_leader->start_time,
+               @destination[tid], @port[tid], args.ret);
+        delete(@destination[tid]);
+    }
     delete(@port[tid]);
 }
 
 END
 {
     clear(@destination);
+    clear(@destination6);
+    clear(@is_ipv6);
     clear(@port);
 }

@@ -28,7 +28,7 @@ class NetworkLabTests(unittest.TestCase):
     def test_dual_stack_capture_matches_both_families_and_normalizes_ipv6(self):
         wire = [
             *WIRE,
-            "TG\tconnect\t160\t10\t80\t0:0:0:0:0:0:0:1\t30003\t0\n",
+            "TG\tconnect\t160\t10\t80\tv6hex:00000000000000000000000000000001\t30003\t0\n",
             "TG\tconnect\t180\t10\t80\t::1\t30004\t-111\n",
         ]
         expected = [
@@ -43,6 +43,10 @@ class NetworkLabTests(unittest.TestCase):
             [event["address"] for event in replay(lines)["connections"]],
             ["127.0.0.1", "127.0.0.1", "::1", "::1"],
         )
+
+    def test_rejects_short_ipv6_wire_buffer(self):
+        with self.assertRaisesRegex(ValueError, "invalid IPv6 address bytes on line 1"):
+            normalize(["TG\tconnect\t160\t10\t80\tv6hex:0001\t30003\t0\n"], "lab", "boot-a")
 
     def test_reused_pid_does_not_resolve_a_connection_to_the_wrong_process(self):
         wrong_identity = WIRE[2].replace("\t80\t", "\t81\t")

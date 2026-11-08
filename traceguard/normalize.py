@@ -1,6 +1,7 @@
 """Normalize the scoped bpftrace lifecycle lab and verify its child timeline."""
 
 import argparse
+from ipaddress import IPv6Address
 import json
 from pathlib import Path
 import sys
@@ -43,11 +44,18 @@ def normalize(lines, host_id, boot_id):
                 event["comm"] = fields[7]
                 event["comm_truncated"] = None
             if kind == "connect":
-                event["address"] = fields[5]
                 event["port"] = int(fields[6])
                 event["result"] = int(fields[7])
         except ValueError as exc:
             raise ValueError(f"invalid numeric field on line {line_number}") from exc
+        if kind == "connect":
+            address = fields[5]
+            if address.startswith("v6hex:"):
+                try:
+                    address = str(IPv6Address(bytes.fromhex(address[6:])))
+                except ValueError as exc:
+                    raise ValueError(f"invalid IPv6 address bytes on line {line_number}") from exc
+            event["address"] = address
         events.append(event)
 
     return events

@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Fix IPv6 address reads on bpftrace v0.20.2
+
+- The combined WSL2 lab captured all four connect attempts with the expected process identity, ports, and return codes. Both IPv6 addresses appeared as `::` instead of `::1`, so validation correctly rejected the capture.
+- The IPv6 probe now reads the 16 address bytes through an explicit userspace buffer pointer. Python converts the hex-encoded bytes to a canonical IPv6 address. The IPv4 encoding remains compatible.
+- Twelve Python tests passed, including decoding the IPv6 wire buffer and rejecting a short buffer. Live verification is pending.
+
 ## 2026-11-08 — Add IPv6 to the TCP connection lab
 
 - Added IPv6 sockaddr decoding and retained syscall return values and exact process attribution.
