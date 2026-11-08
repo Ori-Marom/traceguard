@@ -2,7 +2,7 @@
 
 An educational Linux endpoint detection and investigation platform, planned around eBPF telemetry.
 
-**Status: project planning and environment setup. No sensor, detections, API, or dashboard has been implemented yet.**
+**Status: initial process sensor prototype. Basic eBPF exec capture succeeded on WSL2. Validation of parent PID in the repository sensor is pending.**
 
 ## Goal
 
@@ -24,6 +24,8 @@ Development starts on Windows using Ubuntu under WSL2. The Linux sensor observes
 
 Capture a short-lived command, show its PID and parent PID, and preserve the event for inspection. Validate this with real lab events before building the UI.
 
+Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with known process and parent IDs.
+
 ## Documentation
 
 - [Development setup](docs/SETUP.md)
@@ -36,13 +38,13 @@ Capture a short-lived command, show its PID and parent PID, and preserve the eve
 
 | Component | Responsibility | Status |
 | --- | --- | --- |
-| Linux sensor | Kernel telemetry and loss counters | Planned |
+| Linux sensor | Kernel telemetry and loss counters | Exec prototype |
 | Collector | Validation, normalization, local storage | Planned |
 | Detection engine | Stateful rules and evidence references | Planned |
 | Investigation API/UI | Process tree and event timeline | Planned |
 | Lab and benchmarks | Reproducible correctness and overhead checks | Planned |
 
-C/libbpf is a candidate for the sensor; Python is a candidate for collection and detection. Final choices will follow the environment probe and a documented design decision.
+The first exec experiment uses bpftrace. C/libbpf is a candidate for the next sensor iteration, and Python is a candidate for collection and detection.
 
 ## Development
 

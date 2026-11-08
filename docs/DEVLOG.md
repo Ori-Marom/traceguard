@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Capture the first exec event
+
+- Confirmed that a temporary bpftrace program attached to `sched:sched_process_exec` on Ubuntu under WSL2 and captured `/usr/bin/true`.
+- Observed `EXEC pid=1280 uid=1000 comm=true`.
+- Added a bpftrace prototype that records the parent PID and a lab procedure with an independently known child and parent PID.
+- Next, run the repository script on WSL2 and compare its captured IDs against the shell output. Parent PID validation is pending.
+
 ## 2026-11-08 — Inspect the WSL2 environment
 
 - PowerShell reported WSL `2.6.1.0`, with Ubuntu and WSL2 as defaults.

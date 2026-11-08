@@ -1,0 +1,8 @@
+#!/usr/bin/env bpftrace
+
+// Observe successful execs. Read the parent's process ID while the task is live.
+tracepoint:sched:sched_process_exec
+{
+    printf("EXEC ts_ns=%llu pid=%d ppid=%d uid=%d comm=%s\n",
+           nsecs, pid, curtask->real_parent->tgid, uid, comm);
+}

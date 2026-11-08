@@ -49,4 +49,4 @@ The repository is private. Use your own GitHub authentication; never embed token
 
 ## Current installation status
 
-The repository exists. The developer's local WSL distribution, kernel features, compiler, and sensor toolchain have not yet been verified. There is no application to run at this stage.
+Ubuntu on WSL2 has captured a successful exec with a temporary bpftrace probe. Follow the [exec sensor lab](EXEC-LAB.md) to verify the repository prototype and its parent PID field.

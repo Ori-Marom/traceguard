@@ -16,10 +16,16 @@ Progress is based on demonstrated behavior, not elapsed time.
 
 - [x] Create a private GitHub repository.
 - [x] Add initial project documentation.
-- [ ] Inspect the developer's Windows / WSL environment.
-- [ ] Probe required eBPF features and privileges.
-- [ ] Choose and document the sensor toolchain.
+- [x] Inspect the developer's Windows / WSL environment.
+- [x] Verify the initial exec tracepoint attaches and emits an event under sudo.
+- [x] Choose bpftrace for the initial sensor experiment.
 - [ ] Clone the project locally.
+
+## Stage 1: process sensor
+
+- [x] Capture a successful exec with an inline probe.
+- [x] Add the repository prototype and a repeatable lab.
+- [ ] Run the prototype on WSL2 and compare PID and parent PID with the lab workload.
 
 ## Validation strategy
 
