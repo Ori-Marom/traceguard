@@ -34,6 +34,7 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 - [Live lifecycle lab](docs/LIFECYCLE-LAB.md)
 - [Outbound IPv4 and IPv6 connection lab](docs/NETWORK-LAB.md)
 - [Detection rule and offline demo](docs/DETECTION-LAB.md)
+- [Investigation report](docs/INVESTIGATION-LAB.md)
 - [Roadmap and acceptance criteria](docs/ROADMAP.md)
 - [Development journal](docs/DEVLOG.md)
 - [Contribution workflow](CONTRIBUTING.md)
@@ -45,7 +46,7 @@ Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with kno
 | Linux sensor | Kernel telemetry and loss counters | Scoped lifecycle capture verified |
 | Collector | Validation, normalization, local storage | Local JSON Lines and replay |
 | Detection engine | Stateful rules and evidence references | First offline rule available |
-| Investigation API/UI | Process tree and event timeline | Planned |
+| Investigation UI | Alert evidence, process tree, and event timeline | Offline HTML report |
 | Lab and benchmarks | Reproducible correctness and overhead checks | Planned |
 
 The first exec experiment uses bpftrace. C/libbpf is a candidate for the next sensor iteration, and Python is a candidate for collection and detection.

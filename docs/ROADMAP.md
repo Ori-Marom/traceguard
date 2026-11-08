@@ -48,6 +48,12 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Include source sequence IDs and check positive, negative, and incomplete captures.
 - [x] Evaluate the rule on a saved WSL2 network capture.
 
+## Stage 5: investigation interface
+
+- [x] Generate a self-contained HTML report from a saved capture.
+- [x] Link alerts to process nodes and exact timeline evidence.
+- [ ] Open a report from a saved WSL2 capture and verify navigation in the browser.
+
 ## Validation strategy
 
 Compare capture against a controlled workload with known process count and relationships. Add stress tests only once the basic capture is correct. Record kernel version, hardware, workload, duration, and losses with every benchmark.

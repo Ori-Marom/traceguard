@@ -15,7 +15,11 @@ EVIDENCE_FIELDS = ("seq", "ts_ns", "address", "port", "result")
 
 def detect(lines):
     """Find the earliest qualifying pair per process in a single capture."""
-    snapshot = replay(lines)
+    return detect_snapshot(replay(lines))
+
+
+def detect_snapshot(snapshot):
+    """Evaluate the rule against a validated replay snapshot."""
     recent_refusal = {}
     alerts = {}
 

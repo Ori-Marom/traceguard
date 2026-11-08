@@ -1,5 +1,11 @@
 # Development journal
 
+## 2026-11-08 — Add the offline investigation report
+
+- Added a local HTML report with expandable alerts, a process tree, and a source-event timeline.
+- Reused the existing replay validation and detector. Evidence links jump to the exact sequence IDs.
+- All twenty Python tests passed. The CLI generated the report from the synthetic network capture. Browser navigation on the developer's WSL2 report remains to be verified.
+
 ## 2026-11-08 — Verify the first rule against captured WSL2 traffic
 
 - The saved dual-stack lab capture produced one low-severity alert for the observed process with PID 2635.

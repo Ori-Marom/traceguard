@@ -77,7 +77,7 @@ def _connection(event, identity):
     }
 
 
-def replay(lines):
+def replay(lines, *, include_timeline=False):
     """Build an observed process snapshot from one host and boot."""
     (host_id, boot_id), events = _load_events(lines)
     processes = {}
@@ -147,7 +147,7 @@ def replay(lines):
         process = connection["process"]
         connection["process_observed"] = (process["pid"], process["start_ns"]) in processes
 
-    return {
+    snapshot = {
         "version": 1,
         "host_id": host_id,
         "boot_id": boot_id,
@@ -155,6 +155,9 @@ def replay(lines):
         "processes": [processes[key] for key in sorted(processes)],
         "connections": connections,
     }
+    if include_timeline:
+        snapshot["timeline"] = [event for _, event in events]
+    return snapshot
 
 
 def main():
