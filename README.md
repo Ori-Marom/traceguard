@@ -1,63 +1,62 @@
 # TraceGuard
 
-An educational Linux endpoint detection and investigation platform, planned around eBPF telemetry.
+**TraceGuard is a Linux security telemetry lab.** It captures process and network events with eBPF, links them to the process that generated them, and turns a saved capture into an investigation report with evidence you can inspect.
 
-**Status: initial process sensor prototype. Scoped WSL2 labs verified live process lifecycle events, parent linkage, and outbound IPv4 and IPv6 connection outcomes. Both labs save JSON Lines captures.**
+[Demo video and release notes](https://github.com/Ori-Marom/traceguard/releases) · [Run the demo](docs/DEMO.md) · [Architecture](docs/ARCHITECTURE.md)
 
-## Goal
+![TraceGuard investigation report showing the two refused connections that triggered an alert](docs/media/traceguard-investigation.jpg)
 
-Explain suspicious activity through evidence: which process ran, who started it, which network connection it made, and which detection rule matched.
+## What it does
 
-The target demonstration is a controlled process chain in a local lab, reconstructed as a process tree and investigation timeline.
+- Captures scoped Linux process lifecycle events and blocking TCP connection outcomes in an IPv4 and IPv6 loopback lab.
+- Preserves parent relationships and distinguishes reused PIDs using process start time. Captures are scoped to a host and boot.
+- Replays versioned JSON Lines captures and flags two connection refusals to distinct endpoints by the same process within one second.
+- Generates a self-contained HTML report with an alert, links to its original evidence, a process tree, and a timeline.
 
-## Initial scope
+The rule is a low-severity signal for review. The lab was verified on Ubuntu under WSL2 with kernel 6.6.87.2 and bpftrace 0.20.2.
 
-- Linux process execution and parent-child relationships.
-- Network connections linked to process identities.
-- Versioned events, local storage, and deterministic replay.
-- Explainable rules that correlate events over time.
-- Investigation interface and reproducible performance measurements.
+## Try it
 
-Development starts on Windows using Ubuntu under WSL2. The Linux sensor observes the Linux environment; it does not monitor native Windows processes. eBPF support must be checked on the actual kernel before choosing the sensor implementation. A Linux VM is the fallback if required features are unavailable.
+From the repository root, generate a report from the included synthetic capture with Python 3.10 or later:
 
-## First milestone
+```bash
+mkdir -p captures
+python3 -m traceguard.report tests/fixtures/connection-refusals.jsonl \
+  --output captures/investigation.html
+```
 
-The first lab captured a short-lived command and verified its parent PID using a tagged Bash workload. The [offline replay demo](docs/EVENTS.md) reconstructs a process snapshot from structured lifecycle events. The live lifecycle lab records and validates the same format for a controlled workload.
+Open `captures/investigation.html` and select an evidence link in **Alerts** to highlight the corresponding timeline row.
 
-Run the [exec sensor lab](docs/EXEC-LAB.md) to compare a captured event with known process and parent IDs.
+For a live run in Ubuntu under WSL2, follow the [setup guide](docs/SETUP.md), install bpftrace, and run:
 
-## Documentation
+```bash
+sudo -v
+python3 -m traceguard.demo
+```
 
-- [Development setup](docs/SETUP.md)
-- [Architecture proposal](docs/ARCHITECTURE.md)
-- [Event format and replay demo](docs/EVENTS.md)
-- [Live lifecycle lab](docs/LIFECYCLE-LAB.md)
-- [Outbound IPv4 and IPv6 connection lab](docs/NETWORK-LAB.md)
-- [Detection rule and offline demo](docs/DETECTION-LAB.md)
-- [Investigation report](docs/INVESTIGATION-LAB.md)
-- [Reproducible demo and benchmark](docs/DEMO.md)
-- [Roadmap and acceptance criteria](docs/ROADMAP.md)
-- [Development journal](docs/DEVLOG.md)
-- [Contribution workflow](CONTRIBUTING.md)
+The command captures four loopback connections, checks for one alert, and prints the path to the resulting report. Captures and reports stay in the ignored `captures/` directory.
 
-## Planned components
+## Measured WSL2 run
 
-| Component | Responsibility | Status |
-| --- | --- | --- |
-| Linux sensor | Kernel telemetry and loss counters | Scoped lifecycle capture verified |
-| Collector | Validation, normalization, local storage | Local JSON Lines and replay |
-| Detection engine | Stateful rules and evidence references | First offline rule available |
-| Investigation UI | Alert evidence, process tree, and event timeline | Offline HTML report |
-| Lab and benchmarks | Reproducible correctness and overhead checks | Demo and benchmark available |
+**1,200 of 1,200 expected connection events were captured, with zero reported loss in the tested workload.** Three samples per mode ran 400 connection attempts each.
 
-The first exec experiment uses bpftrace. C/libbpf is a candidate for the next sensor iteration, and Python is a candidate for collection and detection.
+| Median | Baseline | Traced |
+| --- | ---: | ---: |
+| Wall time | 30.659 ms | 553.712 ms |
+| CPU time | 29.215 ms | 42.643 ms |
+| Reported peak RSS | 15,872 KiB | 15,872 KiB |
 
-## Development
+The traced run measures the full pipeline, including bpftrace startup and attachment, validation, and writing the capture. See the [benchmark method and per-run results](docs/DEMO.md#measured-wsl2-run).
 
-Track work in Issues. Each change should include a focused commit, appropriate verification, and updated documentation. See [CONTRIBUTING.md](CONTRIBUTING.md).
+## Project guide
 
-## Limitations
+- [Event format and replay](docs/EVENTS.md)
+- [Process lifecycle lab](docs/LIFECYCLE-LAB.md) and [network lab](docs/NETWORK-LAB.md)
+- [Detection rule](docs/DETECTION-LAB.md) and [investigation report](docs/INVESTIGATION-LAB.md)
+- [Roadmap](docs/ROADMAP.md), [development journal](docs/DEVLOG.md), and [contribution workflow](CONTRIBUTING.md)
 
-This is a learning and engineering project, not a production endpoint protection product. Automatic process termination, stealth, tamper resistance, and Windows-native collection are outside the initial scope.
+Run the tests with `python3 -m unittest discover -s tests -v`.
 
-Real telemetry may contain usernames, paths, command arguments, and destination addresses. Keep it local; commit only synthetic or reviewed, sanitized fixtures.
+## Scope
+
+TraceGuard is an educational Linux lab with scoped workloads. The lifecycle lab uses a single-threaded workload. The network lab verifies blocking loopback TCP, and the detector works on saved captures. WSL2 telemetry covers the Linux environment.
