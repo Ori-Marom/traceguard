@@ -1,5 +1,12 @@
 # Development journal
 
+## 2026-11-08 — Add the reproducible demo and benchmark
+
+- Added a CLI that runs the network capture, validates the first rule, and generates a local investigation report.
+- Added repeated baseline and traced workloads with elapsed time, CPU time, peak RSS, connection counts, and loss diagnostics.
+- All twenty Python tests passed. A local integration run used real loopback sockets and simulated sensor records to verify successful output and a rejected sample with reported loss.
+- Next: run the end-to-end demo and benchmark with real bpftrace on WSL2.
+
 ## 2026-11-08 — Verify the investigation report in the browser
 
 - Opened the local HTML report generated from the saved WSL2 TCP capture.

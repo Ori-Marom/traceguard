@@ -40,9 +40,16 @@ def check_family(family, address):
         ]
 
 
-def run():
-    return check_family(socket.AF_INET, "127.0.0.1") + check_family(socket.AF_INET6, "::1")
+def run(repetitions=1):
+    outcomes = []
+    for _ in range(repetitions):
+        outcomes.extend(check_family(socket.AF_INET, "127.0.0.1"))
+        outcomes.extend(check_family(socket.AF_INET6, "::1"))
+    return outcomes
 
 
 if __name__ == "__main__":
-    Path(sys.argv[1]).write_text(json.dumps(run()), encoding="utf-8")
+    repetitions = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+    if not 1 <= repetitions <= 10000:
+        sys.exit("repetitions must be between 1 and 10000")
+    Path(sys.argv[1]).write_text(json.dumps(run(repetitions)), encoding="utf-8")

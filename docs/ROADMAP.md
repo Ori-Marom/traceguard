@@ -54,6 +54,13 @@ Progress is based on demonstrated behavior, not elapsed time.
 - [x] Link alerts to process nodes and exact timeline evidence.
 - [x] Open a report from a saved WSL2 capture and verify navigation in the browser.
 
+## Stage 6: evaluation and demo
+
+- [x] Add a repeatable capture-to-report command.
+- [x] Add baseline and traced measurements with per-run capture counts and diagnostics.
+- [ ] Run the demo and benchmark on WSL2 and record measured results.
+- [ ] Record the demo walkthrough.
+
 ## Validation strategy
 
 Compare capture against a controlled workload with known process count and relationships. Add stress tests only once the basic capture is correct. Record kernel version, hardware, workload, duration, and losses with every benchmark.
